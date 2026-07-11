@@ -14,10 +14,14 @@ public class PrimeraPersona : MonoBehaviour
     private float pitch = 0f;
     private Vector3 velY;
 
+    private float velocidadOriginal;
+    private Coroutine corrutinaRalentizacion;
+
     void Start()
     {
         cc = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
+        velocidadOriginal = velocidad;
     }
 
     void Update()
@@ -46,5 +50,26 @@ public class PrimeraPersona : MonoBehaviour
         {
             animatorArma.SetBool("IsWalking", caminando);
         }
+    }
+
+    public void Ralentizar(float duracion, float factor)
+    {
+        if (corrutinaRalentizacion != null)
+        {
+            StopCoroutine(corrutinaRalentizacion);
+        }
+        corrutinaRalentizacion = StartCoroutine(RutinaRalentizacion(duracion, factor));
+    }
+
+    private System.Collections.IEnumerator RutinaRalentizacion(float duracion, float factor)
+    {
+        velocidad = velocidadOriginal * factor;
+        Debug.Log("¡Ralentizado! Velocidad reducida a: " + velocidad);
+
+        yield return new WaitForSeconds(duracion);
+
+        velocidad = velocidadOriginal;
+        corrutinaRalentizacion = null;
+        Debug.Log("Fin de la ralentizacion. Velocidad restaurada a: " + velocidad);
     }
 }

@@ -7,6 +7,7 @@ public class EnemigoIA : MonoBehaviour
     [SerializeField] private float danoAtaque = 10f;
     [SerializeField] private float cadenciaAtaque = 1.5f;
     [SerializeField] private float distanciaAtaque = 5f;
+    [SerializeField] private float velocidadMovimiento = 3.5f;
 
     private NavMeshAgent agent;
     private Transform jugador;
@@ -15,6 +16,10 @@ public class EnemigoIA : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            agent.speed = velocidadMovimiento;
+        }
 
         GameObject objetoJugador = GameObject.FindWithTag("Player");
         if (objetoJugador != null)
@@ -46,6 +51,14 @@ public class EnemigoIA : MonoBehaviour
         {
             vidaJugador.RecibirDano((int)danoAtaque);
         }
+
+        // Aplica debuff de ralentizacion al jugador si tiene PrimeraPersona
+        PrimeraPersona movJugador = jugador.GetComponent<PrimeraPersona>();
+        if (movJugador != null)
+        {
+            movJugador.Ralentizar(3f, 0.5f);
+        }
+
         Debug.Log("¡El enemigo ha disparado al jugador!");
     }
 }
