@@ -7,8 +7,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private Text textoEnemigosRestantes;
+    [SerializeField] private GameObject panelVictoria;
 
     private int enemigosVivos = 0;
+    private bool juegoTerminado = false;
 
     void Awake()
     {
@@ -42,9 +44,32 @@ public class GameManager : MonoBehaviour
             enemigosVivos = 0;
         }
         ActualizarUIEnemigos();
+
+        if (PuedoGanar())
+        {
+            GanarJuego();
+        }
     }
 
     public bool PuedoGanar() => enemigosVivos <= 0;
+
+    public void GanarJuego()
+    {
+        if (juegoTerminado) return;
+        juegoTerminado = true;
+
+        if (panelVictoria != null)
+        {
+            panelVictoria.SetActive(true);
+        }
+
+        // Congelar juego y liberar cursor
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Debug.Log("¡Victoria! Juego terminado.");
+    }
 
     private void ActualizarUIEnemigos()
     {

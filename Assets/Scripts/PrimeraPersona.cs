@@ -8,6 +8,8 @@ public class PrimeraPersona : MonoBehaviour
     public float gravedad = -9.81f;
     public Transform camara;
 
+    [SerializeField] private Animator animatorArma;
+
     private CharacterController cc;
     private float pitch = 0f;
     private Vector3 velY;
@@ -38,5 +40,11 @@ public class PrimeraPersona : MonoBehaviour
 
         cc.Move((mov + velY) * Time.deltaTime);
 
+        // Sincronizacion de animacion de caminar
+        bool caminando = cc.velocity.sqrMagnitude > 0.1f && cc.isGrounded;
+        if (animatorArma != null)
+        {
+            animatorArma.SetBool("IsWalking", caminando);
+        }
     }
 }

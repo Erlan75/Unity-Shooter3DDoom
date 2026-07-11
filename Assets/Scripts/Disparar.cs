@@ -17,6 +17,7 @@ public class Disparar : MonoBehaviour
     [SerializeField] private int municionActual;
     [SerializeField] private float tiempoRecarga = 1.5f;
     [SerializeField] private bool estaRecargando = false;
+    [SerializeField] private Animator animatorArma;
 
     void Start()
     {
@@ -45,6 +46,11 @@ public class Disparar : MonoBehaviour
         
         municionActual--;
 
+        if (animatorArma != null)
+        {
+            animatorArma.SetTrigger("Fire");
+        }
+
         if (muzzle != null) 
         { 
             muzzle.SetActive(true);
@@ -72,6 +78,10 @@ public class Disparar : MonoBehaviour
     {
         estaRecargando = true;
         if (muzzle != null) muzzle.SetActive(false);
+        if (animatorArma != null)
+        {
+            animatorArma.SetTrigger("Reload");
+        }
         yield return new WaitForSeconds(tiempoRecarga);
         municionActual = maxMunicion;
         estaRecargando = false;
