@@ -8,6 +8,9 @@ public class PrimeraPersona : MonoBehaviour
     public float gravedad = -9.81f;
     public Transform camara;
 
+    [SerializeField] public float duracionRalentizacion = 3f;
+    [SerializeField] public float factorRalentizacion = 0.5f;
+
     [SerializeField] private Animator animatorArma;
 
     private CharacterController cc;

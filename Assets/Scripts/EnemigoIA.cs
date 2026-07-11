@@ -9,6 +9,8 @@ public class EnemigoIA : MonoBehaviour
     [SerializeField] private float distanciaAtaque = 5f;
     [SerializeField] private float velocidadMovimiento = 3.5f;
 
+    public bool esEnemigoVeneno = false;
+
     private NavMeshAgent agent;
     private Transform jugador;
     private float siguienteTiempoAtaque = 0f;
@@ -52,11 +54,14 @@ public class EnemigoIA : MonoBehaviour
             vidaJugador.RecibirDano((int)danoAtaque);
         }
 
-        // Aplica debuff de ralentizacion al jugador si tiene PrimeraPersona
-        PrimeraPersona movJugador = jugador.GetComponent<PrimeraPersona>();
-        if (movJugador != null)
+        // Aplica debuff de ralentizacion al jugador solo si es un enemigo de veneno
+        if (esEnemigoVeneno)
         {
-            movJugador.Ralentizar(3f, 0.5f);
+            PrimeraPersona movJugador = jugador.GetComponent<PrimeraPersona>();
+            if (movJugador != null)
+            {
+                movJugador.Ralentizar(movJugador.duracionRalentizacion, movJugador.factorRalentizacion);
+            }
         }
 
         Debug.Log("¡El enemigo ha disparado al jugador!");
